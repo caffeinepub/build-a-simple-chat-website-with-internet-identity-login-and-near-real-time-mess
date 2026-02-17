@@ -1,0 +1,165 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 5,
+  "summary": "Chat web app with Internet Identity login and near-real-time messaging, plus a separate AI video-generation page with selectable voice/music, video download, and social media upload assistance.",
+  "architectural_notes": [
+    "Use Internet Identity for authentication/login.",
+    "Support real-time message exchange via backend.",
+    "Add a separate video-generation page/route in the frontend with prompt + preset selectors for voice and music.",
+    "Provide a downloadable video output artifact from the video-generation flow.",
+    "Include a social-media sharing/upload assistance UI (platform-specific share links or upload guidance)."
+  ],
+  "known_issues": [],
+  "isFixRequest": false,
+  "imageRequirements": "## Required Images\n- Warm cinematic illustration with abstract film frames and sound waves, terracotta/beige/charcoal palette (video-hero.dim_1600x600.png)\n- Minimal clapperboard icon in warm terracotta and charcoal on transparent background (video-icon.dim_256x256.png)",
+  "existing_features": [
+    {
+      "id": "feature-implement-internet-identity-authentication-in-the-frontend-so-users-can-sign-in-see-their-authenticated-state-and-sign-out",
+      "title": "Implement Internet Identity authentication in the frontend so users can sign in, see their authenticated state, and sign out.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-build-the-chat-ui-a-main-chat-page-that-shows-a-scrollable-message-feed-and-a-message-composer-text-input-send-button-for-authenticated-users-with-sensible-empty-loading-error-states",
+      "title": "Build the chat UI: a main chat page that shows a scrollable message feed and a message composer (text input + send button) for authenticated users, with sensible empty/loading/error states.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-near-real-time-updates-by-polling-for-new-messages-on-an-interval-using-react-query-e-g-refetchinterval-and-ensure-the-ui-updates-smoothly-without-resetting-scroll-unnecessarily",
+      "title": "Add near-real-time updates by polling for new messages on an interval using React Query (e.g., refetchInterval), and ensure the UI updates smoothly without resetting scroll unnecessarily.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-basic-input-validation-and-safety-enforce-reasonable-message-length-limits-trim-whitespace-only-messages-and-prevent-spammy-rapid-submissions-with-simple-rate-limiting-backend-enforced-frontend-also-disables-send-briefly-on-submit",
+      "title": "Add basic input validation and safety: enforce reasonable message length limits, trim whitespace-only messages, and prevent spammy rapid submissions with simple rate limiting (backend enforced; frontend also disables send briefly on submit).",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-apply-a-cohesive-creative-visual-theme-for-the-chat-website-colors-typography-spacing-and-component-styling-and-enforce-it-consistently-across-the-sign-in-and-chat-views-do-not-use-a-blue-purple-theme",
+      "title": "Apply a cohesive, creative visual theme for the chat website (colors, typography, spacing, and component styling) and enforce it consistently across the sign-in and chat views (do not use a blue/purple theme).",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-generate-and-include-required-static-image-assets-in-the-frontend-and-render-them-in-the-ui-e-g-app-logo-and-a-subtle-background-hero-decoration-from-frontend-public-assets-generated",
+      "title": "Generate and include required static image assets in the frontend and render them in the UI (e.g., app logo and a subtle background/hero decoration) from frontend/public/assets/generated.",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-separate-ai-video-page-to-the-existing-app-and-provide-navigation-so-users-can-switch-between-the-existing-chat-page-and-the-new-ai-video-page-without-removing-or-breaking-chat-functionality",
+      "title": "Add a separate \"AI Video\" page to the existing app and provide navigation so users can switch between the existing Chat page and the new AI Video page without removing or breaking Chat functionality.",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-on-the-ai-video-page-implement-a-simple-video-creation-form-with-1-a-prompt-text-input-2-a-required-ai-voice-selection-with-at-least-male-and-female-and-3-a-required-background-music-selection-that-includes-soft-calm-and-cinematic-options",
+      "title": "On the AI Video page, implement a simple video-creation form with: (1) a prompt text input, (2) a required AI voice selection with at least \"Male\" and \"Female\", and (3) a required background music selection that includes \"Soft\", \"Calm\", and \"Cinematic\" options.",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-a-generate-flow-on-the-ai-video-page-that-works-without-any-external-ai-service-calls-by-producing-a-locally-generated-preview-clip-placeholder-generation-is-acceptable-and-allows-the-user-to-create-unlimited-clips-no-per-user-or-per-session-enforced-limit-in-the-ui-flow",
+      "title": "Implement a \"Generate\" flow on the AI Video page that works without any external AI service calls by producing a locally generated preview clip (placeholder generation is acceptable) and allows the user to create unlimited clips (no per-user or per-session enforced limit in the UI/flow).",
+      "reqIds": [
+        "REQ-10"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-download-action-for-each-generated-clip-on-the-ai-video-page-so-the-user-can-download-the-generated-video-or-the-generated-placeholder-clip-to-their-device",
+      "title": "Add a \"Download\" action for each generated clip on the AI Video page so the user can download the generated video (or the generated placeholder clip) to their device.",
+      "reqIds": [
+        "REQ-11"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-provide-upload-share-assistance-on-the-ai-video-page-for-posting-generated-videos-to-different-social-media-platforms-implemented-as-an-in-app-help-ui-no-direct-integration-with-social-media-apis",
+      "title": "Provide \"upload/share assistance\" on the AI Video page for posting generated videos to different social media platforms, implemented as an in-app help UI (no direct integration with social media APIs).",
+      "reqIds": [
+        "REQ-12"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-and-apply-a-cohesive-visual-theme-for-the-new-ai-video-page-that-matches-the-existing-warm-toned-site-styling-and-remains-consistent-across-both-chat-and-ai-video-pages-do-not-introduce-a-blue-purple-theme",
+      "title": "Create and apply a cohesive visual theme for the new AI Video page that matches the existing warm-toned site styling and remains consistent across both Chat and AI Video pages (do not introduce a blue/purple theme).",
+      "reqIds": [
+        "REQ-13"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-render-newly-generated-static-image-assets-for-the-ai-video-page-from-frontend-public-assets-generated-do-not-serve-them-from-the-backend",
+      "title": "Render newly generated static image assets for the AI Video page from frontend/public/assets/generated (do not serve them from the backend).",
+      "reqIds": [
+        "REQ-14"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Build a simple chatting website (chat app) with user login and real-time messaging via a backend.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Create backend chat functionality in the single Motoko main actor: store chat messages (author principal, optional display name, message text, timestamp) and expose methods to add a message and list recent messages with pagination.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Add a separate AI video-generation page with a simple prompt input and selectable presets for male/female AI voice and soft/calm/cinematic background music.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Support generating unlimited video clips (no enforced per-user clip limit in the UI/flow).",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-6",
+      "summary": "Allow users to download the generated video from the video-generation page.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-7",
+      "summary": "Provide UI/help to upload/share generated videos to different social media platforms (upload assistance/share flow).",
+      "reqIds": [],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "Build a simple chat website with Internet Identity login and near-real-time messaging",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

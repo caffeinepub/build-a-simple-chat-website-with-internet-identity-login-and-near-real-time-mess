@@ -1,0 +1,135 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-add-a-separate-ai-video-page-to-the-existing-app-and-provide-navigation-so-users-can-switch-between-the-existing-chat-page-and-the-new-ai-video-page-without-removing-or-breaking-chat-functionality",
+      "featureTitle": "Add a separate \"AI Video\" page to the existing app and provide navigation so users can switch between the existing Chat page and the new AI Video page without removing or breaking Chat functionality.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/pages/AIVideoPage.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-8"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-on-the-ai-video-page-implement-a-simple-video-creation-form-with-1-a-prompt-text-input-2-a-required-ai-voice-selection-with-at-least-male-and-female-and-3-a-required-background-music-selection-that-includes-soft-calm-and-cinematic-options",
+      "featureTitle": "On the AI Video page, implement a simple video-creation form with: (1) a prompt text input, (2) a required AI voice selection with at least \"Male\" and \"Female\", and (3) a required background music selection that includes \"Soft\", \"Calm\", and \"Cinematic\" options.",
+      "files": [
+        "frontend/src/pages/AIVideoPage.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-9"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-a-generate-flow-on-the-ai-video-page-that-works-without-any-external-ai-service-calls-by-producing-a-locally-generated-preview-clip-placeholder-generation-is-acceptable-and-allows-the-user-to-create-unlimited-clips-no-per-user-or-per-session-enforced-limit-in-the-ui-flow",
+      "featureTitle": "Implement a \"Generate\" flow on the AI Video page that works without any external AI service calls by producing a locally generated preview clip (placeholder generation is acceptable) and allows the user to create unlimited clips (no per-user or per-session enforced limit in the UI/flow).",
+      "files": [
+        "frontend/src/lib/localClipGenerator.ts",
+        "frontend/src/pages/AIVideoPage.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-10"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-a-download-action-for-each-generated-clip-on-the-ai-video-page-so-the-user-can-download-the-generated-video-or-the-generated-placeholder-clip-to-their-device",
+      "featureTitle": "Add a \"Download\" action for each generated clip on the AI Video page so the user can download the generated video (or the generated placeholder clip) to their device.",
+      "files": [
+        "frontend/src/lib/download.ts",
+        "frontend/src/pages/AIVideoPage.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-11"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-provide-upload-share-assistance-on-the-ai-video-page-for-posting-generated-videos-to-different-social-media-platforms-implemented-as-an-in-app-help-ui-no-direct-integration-with-social-media-apis",
+      "featureTitle": "Provide \"upload/share assistance\" on the AI Video page for posting generated videos to different social media platforms, implemented as an in-app help UI (no direct integration with social media APIs).",
+      "files": [
+        "frontend/src/pages/AIVideoPage.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-12"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-create-and-apply-a-cohesive-visual-theme-for-the-new-ai-video-page-that-matches-the-existing-warm-toned-site-styling-and-remains-consistent-across-both-chat-and-ai-video-pages-do-not-introduce-a-blue-purple-theme",
+      "featureTitle": "Create and apply a cohesive visual theme for the new AI Video page that matches the existing warm-toned site styling and remains consistent across both Chat and AI Video pages (do not introduce a blue/purple theme).",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/pages/AIVideoPage.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-13"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-render-newly-generated-static-image-assets-for-the-ai-video-page-from-frontend-public-assets-generated-do-not-serve-them-from-the-backend",
+      "featureTitle": "Render newly generated static image assets for the AI Video page from frontend/public/assets/generated (do not serve them from the backend).",
+      "files": [
+        "frontend/src/pages/AIVideoPage.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-14"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

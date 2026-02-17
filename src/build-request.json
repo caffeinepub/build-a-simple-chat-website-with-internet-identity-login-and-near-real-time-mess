@@ -1,0 +1,155 @@
+{
+  "kind": "build_request",
+  "title": "Add AI video generator page with voice/music presets, download, and social sharing help",
+  "projectName": "ClipForge",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-8",
+      "text": "Add a separate \"AI Video\" page to the existing app and provide navigation so users can switch between the existing Chat page and the new AI Video page without removing or breaking Chat functionality.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-5",
+          "msg-9"
+        ],
+        "quotes": [
+          "Separate new page with different ai voice all kinds of music should be available",
+          "Ok start"
+        ]
+      },
+      "acceptanceCriteria": [
+        "App has a clear way to navigate between Chat and AI Video views (e.g., tabs/links/buttons).",
+        "Chat page behavior remains unchanged (messages still load, sign-in/out still works).",
+        "All user-facing text on the new page is in English."
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "text": "On the AI Video page, implement a simple video-creation form with: (1) a prompt text input, (2) a required AI voice selection with at least \"Male\" and \"Female\", and (3) a required background music selection that includes \"Soft\", \"Calm\", and \"Cinematic\" options.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-7"
+        ],
+        "quotes": [
+          "AI voice and music should be real select male and female voice with soft calm cenematic music"
+        ]
+      },
+      "acceptanceCriteria": [
+        "User can enter a prompt and must choose one voice preset (Male/Female) and one music preset (Soft/Calm/Cinematic) before generating.",
+        "Validation errors are shown inline in English when required inputs are missing.",
+        "Selections persist while the user stays on the AI Video page (changing prompt/voice/music updates the next generated clip)."
+      ]
+    },
+    {
+      "id": "REQ-10",
+      "text": "Implement a \"Generate\" flow on the AI Video page that works without any external AI service calls by producing a locally generated preview clip (placeholder generation is acceptable) and allows the user to create unlimited clips (no per-user or per-session enforced limit in the UI/flow).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-8"
+        ],
+        "quotes": [
+          "should be  to create unlimited video clip"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Clicking Generate creates a new clip entry each time; the UI does not block creation due to a quota/limit.",
+        "The generation flow does not require calling external AI providers/services.",
+        "Each generated clip has a visible preview area or a clearly labeled placeholder preview state on completion."
+      ]
+    },
+    {
+      "id": "REQ-11",
+      "text": "Add a \"Download\" action for each generated clip on the AI Video page so the user can download the generated video (or the generated placeholder clip) to their device.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-4",
+          "msg-8"
+        ],
+        "quotes": [
+          "create video should be download",
+          "And make it possible to download video"
+        ]
+      },
+      "acceptanceCriteria": [
+        "After generating a clip, a Download button is available for that clip.",
+        "Clicking Download triggers a file download in the browser with a video file extension.",
+        "If generation fails, Download is disabled/hidden and a clear English error message is shown."
+      ]
+    },
+    {
+      "id": "REQ-12",
+      "text": "Provide \"upload/share assistance\" on the AI Video page for posting generated videos to different social media platforms, implemented as an in-app help UI (no direct integration with social media APIs).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-8"
+        ],
+        "quotes": [
+          "help me to upload in different social media"
+        ]
+      },
+      "acceptanceCriteria": [
+        "AI Video page includes a clearly labeled section for sharing/upload help.",
+        "The help UI gives platform-agnostic steps users can follow to upload a downloaded video file to social platforms.",
+        "No feature requires logging into or calling APIs for TikTok/YouTube/Instagram/etc."
+      ]
+    },
+    {
+      "id": "REQ-13",
+      "text": "Create and apply a cohesive visual theme for the new AI Video page that matches the existing warm-toned site styling and remains consistent across both Chat and AI Video pages (do not introduce a blue/purple theme).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-9"
+        ],
+        "quotes": [
+          "Ok start"
+        ]
+      },
+      "acceptanceCriteria": [
+        "AI Video page uses the existing design system (Tailwind + existing theme variables) and looks visually consistent with the Chat page.",
+        "No dominant blue/purple color theme is introduced.",
+        "New UI components (forms, buttons, panels) match existing spacing/typography conventions."
+      ]
+    },
+    {
+      "id": "REQ-14",
+      "text": "Render newly generated static image assets for the AI Video page from frontend/public/assets/generated (do not serve them from the backend).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-9"
+        ],
+        "quotes": [
+          "Ok start"
+        ]
+      },
+      "acceptanceCriteria": [
+        "New AI Video page references the generated assets via static paths under /assets/generated/.",
+        "Assets load correctly in the browser and are used in the AI Video page UI."
+      ]
+    }
+  ],
+  "constraints": [
+    "Backend must remain a single Motoko actor in backend/main.mo; do not introduce additional backend services.",
+    "Do not modify files listed as immutable in SYSTEM_CONTEXT (compose existing UI components instead).",
+    "Do not integrate with external AI video generation services or third-party social media authentication/APIs."
+  ],
+  "nonGoals": [
+    "True AI video generation via external providers (OpenAI/Anthropic/other).",
+    "Direct in-app uploads to social media via platform APIs.",
+    "Providing guaranteed availability of specific male/female voices across all browsers/devices (voice selection is a preset; actual synthesis/availability may vary).",
+    "Adding a backend database or external storage for generated videos."
+  ],
+  "imageRequirements": {
+    "required": [
+      "Warm cinematic illustration with abstract film frames and sound waves, terracotta/beige/charcoal palette (video-hero.dim_1600x600.png)",
+      "Minimal clapperboard icon in warm terracotta and charcoal on transparent background (video-icon.dim_256x256.png)"
+    ],
+    "edits": []
+  }
+}

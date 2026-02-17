@@ -1,0 +1,148 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "ClipForge — AI Video page with presets, local clip generation, download, and sharing help",
+  "requirements": [
+    {
+      "id": "REQ-8",
+      "summary": "Add a new AI Video page and navigation to switch between Chat and AI Video without breaking Chat behavior.",
+      "acceptanceCriteria": [
+        "App has a clear way to navigate between Chat and AI Video views (e.g., tabs/links/buttons).",
+        "Chat page behavior remains unchanged (messages still load, sign-in/out still works).",
+        "All user-facing text on the new page is in English."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/AIVideoPage.tsx",
+          "operation": "create",
+          "description": "Create the new AI Video page view component (English-only UI) using the existing shadcn-ui primitives (e.g., Card, Button, Input) to keep styling consistent. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire AI Video page into the app by adding in-app navigation (e.g., warm-themed tab buttons) to switch between the existing ChatPage and the new AIVideoPage, ensuring ChatPage rendering and behavior remain unchanged when selected."
+        }
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "summary": "Implement the AI Video creation form with prompt input and required voice/music preset selections (Male/Female; Soft/Calm/Cinematic) with inline validation.",
+      "acceptanceCriteria": [
+        "User can enter a prompt and must choose one voice preset (Male/Female) and one music preset (Soft/Calm/Cinematic) before generating.",
+        "Validation errors are shown inline in English when required inputs are missing.",
+        "Selections persist while the user stays on the AI Video page (changing prompt/voice/music updates the next generated clip)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/AIVideoPage.tsx",
+          "operation": "modify",
+          "description": "Add the video-creation form: prompt text input plus required voice (Male/Female) and music (Soft/Calm/Cinematic) selections, with inline English validation and state that persists while the user stays on the AI Video page. Use existing shadcn-ui components (e.g., Input, Button, Card) for consistent form controls where available. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-10",
+      "summary": "Implement a local-only Generate flow that creates unlimited placeholder preview clips without external AI service calls.",
+      "acceptanceCriteria": [
+        "Clicking Generate creates a new clip entry each time; the UI does not block creation due to a quota/limit.",
+        "The generation flow does not require calling external AI providers/services.",
+        "Each generated clip has a visible preview area or a clearly labeled placeholder preview state on completion."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/AIVideoPage.tsx",
+          "operation": "modify",
+          "description": "Implement local placeholder clip generation: on each Generate click, append a new clip entry (no quota/limit) and produce a preview state (e.g., a video element fed by an object URL when feasible, otherwise a clearly labeled placeholder preview panel). Ensure no external AI/service calls are used."
+        },
+        {
+          "path": "frontend/src/lib/localClipGenerator.ts",
+          "operation": "create",
+          "description": "Add a small frontend utility to create a downloadable placeholder 'video' Blob (with a video file extension) and return an object URL plus metadata for previews; keep it deterministic and fully local (no network calls)."
+        }
+      ]
+    },
+    {
+      "id": "REQ-11",
+      "summary": "Add per-clip Download action that triggers a browser download with a video file extension and handles failures gracefully.",
+      "acceptanceCriteria": [
+        "After generating a clip, a Download button is available for that clip.",
+        "Clicking Download triggers a file download in the browser with a video file extension.",
+        "If generation fails, Download is disabled/hidden and a clear English error message is shown."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/AIVideoPage.tsx",
+          "operation": "modify",
+          "description": "For each generated clip entry, render a Download action that triggers a browser download (e.g., via an anchor + object URL) using a video file extension. If a clip is in a failed state, hide/disable Download and show a clear English error message. Use existing shadcn-ui Button styling for the action. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/lib/download.ts",
+          "operation": "create",
+          "description": "Add a small helper to initiate downloads in-browser (e.g., create an anchor, set download filename with a video extension, click, and clean up object URLs) to keep the AI Video page logic clean."
+        }
+      ]
+    },
+    {
+      "id": "REQ-12",
+      "summary": "Provide in-app upload/share assistance UI for social platforms without any direct API integration or logins.",
+      "acceptanceCriteria": [
+        "AI Video page includes a clearly labeled section for sharing/upload help.",
+        "The help UI gives platform-agnostic steps users can follow to upload a downloaded video file to social platforms.",
+        "No feature requires logging into or calling APIs for TikTok/YouTube/Instagram/etc."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/AIVideoPage.tsx",
+          "operation": "modify",
+          "description": "Add a clearly labeled 'Sharing / Upload Help' section that provides platform-agnostic, step-by-step guidance for uploading a downloaded video file to common social platforms, explicitly avoiding any social API calls or in-app login flows. Present the content in warm-themed panels using existing shadcn-ui Card/typography conventions. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-13",
+      "summary": "Apply a cohesive warm-toned visual theme to the AI Video page consistent with the existing Chat page (no blue/purple shift).",
+      "acceptanceCriteria": [
+        "AI Video page uses the existing design system (Tailwind + existing theme variables) and looks visually consistent with the Chat page.",
+        "No dominant blue/purple color theme is introduced.",
+        "New UI components (forms, buttons, panels) match existing spacing/typography conventions."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/AIVideoPage.tsx",
+          "operation": "modify",
+          "description": "Style the AI Video page using the existing Tailwind + warm OKLCH theme variables (background/card/muted/primary) and reuse established spacing/typography patterns from Chat (e.g., container widths, Card + shadow-warm), avoiding any blue/purple dominant palette."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Ensure the new navigation and page switching UI uses the existing warm theme tokens (primary/muted/border) so Chat and AI Video feel cohesive and consistent."
+        }
+      ]
+    },
+    {
+      "id": "REQ-14",
+      "summary": "Render new generated static image assets from frontend/public/assets/generated and use them in the AI Video page UI.",
+      "acceptanceCriteria": [
+        "New AI Video page references the generated assets via static paths under /assets/generated/.",
+        "Assets load correctly in the browser and are used in the AI Video page UI."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/public/assets/generated/video-hero.dim_1600x600.png",
+          "operation": "create",
+          "description": "Add the generated hero image asset file at the exact path frontend/public/assets/generated/video-hero.dim_1600x600.png for static serving (do not serve from backend)."
+        },
+        {
+          "path": "frontend/public/assets/generated/video-icon.dim_256x256.png",
+          "operation": "create",
+          "description": "Add the generated icon asset file at the exact path frontend/public/assets/generated/video-icon.dim_256x256.png for static serving (do not serve from backend)."
+        },
+        {
+          "path": "frontend/src/pages/AIVideoPage.tsx",
+          "operation": "modify",
+          "description": "Reference and render the static assets in the AI Video page UI using the exact paths frontend/public/assets/generated/video-hero.dim_1600x600.png and frontend/public/assets/generated/video-icon.dim_256x256.png (served under /assets/generated/ in the browser), ensuring they appear in the page layout (e.g., hero/header section)."
+        }
+      ]
+    }
+  ]
+}
