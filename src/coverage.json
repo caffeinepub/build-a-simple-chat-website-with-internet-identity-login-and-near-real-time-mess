@@ -1,119 +1,140 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-16T15:49:28.144Z",
+  "generatedAt": "2026-02-17T00:44:04.165Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 7,
-    "implemented": 7,
+    "total": 6,
+    "implemented": 4,
     "items": [
       {
-        "id": "REQ-10",
-        "summary": "Implement a \"Generate\" flow on the AI Video page that works without any external AI service calls by producing a locally generated preview clip (placeholder generation is acceptable) and allows the user to create unlimited clips (no per-user or per-session enforced limit in the UI/flow).",
+        "id": "REQ-1",
+        "summary": "Implement per-user private storage and retrieval so that each authenticated user can only create and view their own Q&A items; no user should be able to read any other user's items, even if they know IDs or pagination parameters.",
+        "status": "unknown",
+        "plannedFiles": [],
+        "matchedFiles": []
+      },
+      {
+        "id": "REQ-2",
+        "summary": "Replace the global chat message model with a private Q&A model that supports: creating a question, listing the caller’s questions, and saving an optional answer for a question (answer authored/edited by the same caller).",
+        "status": "unknown",
+        "plannedFiles": [],
+        "matchedFiles": []
+      },
+      {
+        "id": "REQ-3",
+        "summary": "Update the frontend “Chat” experience to a private “My Q&A” page that only works when signed in with Internet Identity, showing the user’s own questions and answers and appropriate empty/loading/error states.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/pages/AIVideoPage.tsx",
-          "frontend/src/lib/localClipGenerator.ts"
+          "frontend/src/pages/ChatPage.tsx",
+          "frontend/src/pages/MyQAPage.tsx",
+          "frontend/src/App.tsx",
+          "frontend/src/components/AuthStatus.tsx",
+          "frontend/src/hooks/useQuestions.ts",
+          "frontend/src/hooks/useCreateQuestion.ts",
+          "frontend/src/hooks/useAnswerQuestion.ts",
+          "frontend/src/hooks/useCallerUserProfile.ts",
+          "frontend/src/components/ProfileSetupDialog.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/pages/AIVideoPage.tsx",
-          "frontend/src/lib/localClipGenerator.ts"
+          "frontend/src/pages/ChatPage.tsx",
+          "frontend/src/pages/MyQAPage.tsx",
+          "frontend/src/App.tsx",
+          "frontend/src/components/AuthStatus.tsx",
+          "frontend/src/hooks/useQuestions.ts",
+          "frontend/src/hooks/useCreateQuestion.ts",
+          "frontend/src/hooks/useAnswerQuestion.ts",
+          "frontend/src/hooks/useCallerUserProfile.ts",
+          "frontend/src/components/ProfileSetupDialog.tsx"
         ]
       },
       {
-        "id": "REQ-11",
-        "summary": "Add a \"Download\" action for each generated clip on the AI Video page so the user can download the generated video (or the generated placeholder clip) to their device.",
+        "id": "REQ-4",
+        "summary": "Add in-browser speech-to-text for Nepali input on the Q&A composer so users can dictate a question and have it populate the text input.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/pages/AIVideoPage.tsx",
-          "frontend/src/lib/download.ts"
+          "frontend/src/hooks/useSpeechToText.ts",
+          "frontend/src/components/QAComposer.tsx",
+          "frontend/src/pages/MyQAPage.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/pages/AIVideoPage.tsx",
-          "frontend/src/lib/download.ts"
+          "frontend/src/hooks/useSpeechToText.ts",
+          "frontend/src/components/QAComposer.tsx",
+          "frontend/src/pages/MyQAPage.tsx"
         ]
       },
       {
-        "id": "REQ-12",
-        "summary": "Provide \"upload/share assistance\" on the AI Video page for posting generated videos to different social media platforms, implemented as an in-app help UI (no direct integration with social media APIs).",
+        "id": "REQ-5",
+        "summary": "Add in-browser text-to-speech playback controls so users can listen to their question and/or answer read aloud.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/pages/AIVideoPage.tsx"
+          "frontend/src/hooks/useTextToSpeech.ts",
+          "frontend/src/components/QAItemCard.tsx",
+          "frontend/src/pages/MyQAPage.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/pages/AIVideoPage.tsx"
+          "frontend/src/hooks/useTextToSpeech.ts",
+          "frontend/src/components/QAItemCard.tsx",
+          "frontend/src/pages/MyQAPage.tsx"
         ]
       },
       {
-        "id": "REQ-13",
-        "summary": "Create and apply a cohesive visual theme for the new AI Video page that matches the existing warm-toned site styling and remains consistent across both Chat and AI Video pages (do not introduce a blue/purple theme).",
+        "id": "REQ-6",
+        "summary": "Update user-facing labels and branding from generic “Chat” to a Nepali-focused private Q&A experience, while keeping all user-facing text in English.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/pages/AIVideoPage.tsx",
-          "frontend/src/App.tsx"
+          "frontend/src/App.tsx",
+          "frontend/src/components/AuthStatus.tsx",
+          "frontend/src/pages/MyQAPage.tsx",
+          "frontend/src/components/QAComposer.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/pages/AIVideoPage.tsx",
-          "frontend/src/App.tsx"
-        ]
-      },
-      {
-        "id": "REQ-14",
-        "summary": "Render newly generated static image assets for the AI Video page from frontend/public/assets/generated (do not serve them from the backend).",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/public/assets/generated/video-hero.dim_1600x600.png",
-          "frontend/public/assets/generated/video-icon.dim_256x256.png",
-          "frontend/src/pages/AIVideoPage.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/public/assets/generated/video-hero.dim_1600x600.png",
-          "frontend/public/assets/generated/video-icon.dim_256x256.png",
-          "frontend/src/pages/AIVideoPage.tsx"
-        ]
-      },
-      {
-        "id": "REQ-8",
-        "summary": "Add a separate \"AI Video\" page to the existing app and provide navigation so users can switch between the existing Chat page and the new AI Video page without removing or breaking Chat functionality.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/pages/AIVideoPage.tsx",
-          "frontend/src/App.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/pages/AIVideoPage.tsx",
-          "frontend/src/App.tsx"
-        ]
-      },
-      {
-        "id": "REQ-9",
-        "summary": "On the AI Video page, implement a simple video-creation form with: (1) a prompt text input, (2) a required AI voice selection with at least \"Male\" and \"Female\", and (3) a required background music selection that includes \"Soft\", \"Calm\", and \"Cinematic\" options.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/pages/AIVideoPage.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/pages/AIVideoPage.tsx"
+          "frontend/src/App.tsx",
+          "frontend/src/components/AuthStatus.tsx",
+          "frontend/src/pages/MyQAPage.tsx",
+          "frontend/src/components/QAComposer.tsx"
         ]
       }
     ]
   },
   "changedFiles": [
+    "backend/authorization/MixinAuthorization.mo",
+    "backend/authorization/access-control.mo",
+    "backend/main.mo",
+    "backend/migration.mo",
     "build-request.json",
-    "build-template/README.md",
     "caffeine.lock.json",
     "feature_evidence.json",
+    "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/public/assets/generated/video-hero.dim_1600x600.png",
-    "frontend/public/assets/generated/video-icon.dim_256x256.png",
     "frontend/src/App.tsx",
-    "frontend/src/config.ts",
-    "frontend/src/lib/download.ts",
-    "frontend/src/lib/localClipGenerator.ts",
-    "frontend/src/pages/AIVideoPage.tsx",
+    "frontend/src/backend.d.ts",
+    "frontend/src/backend.ts",
+    "frontend/src/components/AuthStatus.tsx",
+    "frontend/src/components/MessageComposer.tsx",
+    "frontend/src/components/MessageFeed.tsx",
+    "frontend/src/components/ProfileSetupDialog.tsx",
+    "frontend/src/components/QAComposer.tsx",
+    "frontend/src/components/QAItemCard.tsx",
+    "frontend/src/declarations/backend.did.d.ts",
+    "frontend/src/declarations/backend.did.js",
+    "frontend/src/hooks/useActor.ts",
+    "frontend/src/hooks/useAnswerQuestion.ts",
+    "frontend/src/hooks/useCallerUserProfile.ts",
+    "frontend/src/hooks/useChatMessages.ts",
+    "frontend/src/hooks/useCreateQuestion.ts",
+    "frontend/src/hooks/useQuestions.ts",
+    "frontend/src/hooks/useScrollAnchor.ts",
+    "frontend/src/hooks/useSendMessage.ts",
+    "frontend/src/hooks/useSpeechToText.ts",
+    "frontend/src/hooks/useTextToSpeech.ts",
+    "frontend/src/lib/chatValidation.ts",
+    "frontend/src/pages/ChatPage.tsx",
+    "frontend/src/pages/MyQAPage.tsx",
+    "frontend/src/utils/urlParams.ts",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

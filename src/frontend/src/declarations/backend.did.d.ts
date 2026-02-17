@@ -10,18 +10,38 @@ import type { ActorMethod } from '@icp-sdk/core/agent';
 import type { IDL } from '@icp-sdk/core/candid';
 import type { Principal } from '@icp-sdk/core/principal';
 
-export interface ChatMessage {
-  'content' : MessageContent,
-  'displayName' : [] | [DisplayName],
-  'author' : Principal,
-  'timestamp' : Timestamp,
-}
+export type AnswerContent = string;
 export type DisplayName = string;
-export type MessageContent = string;
+export interface Question {
+  'id' : QuestionId,
+  'created' : Timestamp,
+  'modified' : [] | [Timestamp],
+  'content' : QuestionContent,
+  'displayName' : [] | [DisplayName],
+  'answer' : [] | [AnswerContent],
+  'author' : Principal,
+}
+export type QuestionContent = string;
+export type QuestionId = bigint;
 export type Timestamp = bigint;
+export interface UserProfile { 'name' : string }
+export type UserRole = { 'admin' : null } |
+  { 'user' : null } |
+  { 'guest' : null };
 export interface _SERVICE {
-  'getMessages' : ActorMethod<[bigint, bigint], Array<ChatMessage>>,
-  'sendMessage' : ActorMethod<[[] | [DisplayName], MessageContent], undefined>,
+  '_initializeAccessControlWithSecret' : ActorMethod<[string], undefined>,
+  'answerQuestion' : ActorMethod<[QuestionId, AnswerContent], undefined>,
+  'assignCallerUserRole' : ActorMethod<[Principal, UserRole], undefined>,
+  'createQuestion' : ActorMethod<
+    [[] | [DisplayName], QuestionContent],
+    QuestionId
+  >,
+  'getCallerUserProfile' : ActorMethod<[], [] | [UserProfile]>,
+  'getCallerUserRole' : ActorMethod<[], UserRole>,
+  'getQuestions' : ActorMethod<[bigint, bigint], Array<Question>>,
+  'getUserProfile' : ActorMethod<[Principal], [] | [UserProfile]>,
+  'isCallerAdmin' : ActorMethod<[], boolean>,
+  'saveCallerUserProfile' : ActorMethod<[UserProfile], undefined>,
 }
 export declare const idlService: IDL.ServiceClass;
 export declare const idlInitArgs: IDL.Type[];

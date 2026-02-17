@@ -2,8 +2,8 @@
   "frontend/index.html": "Updated HTML document with proper title, meta description, and Google Fonts link for Inter font family.",
   "frontend/index.css": "Complete CSS with warm terracotta, charcoal, and beige OKLCH color system for both light and dark modes, avoiding blue/purple tones.",
   "frontend/tailwind.config.js": "Extended Tailwind configuration with Inter font family, custom warm shadow, and fade-in animation.",
-  "frontend/src/App.tsx": "Main application component that renders the auth header, chat page, subtle background pattern, and footer with attribution.",
-  "frontend/src/components/AuthStatus.tsx": "Header component displaying the chat logo, app title, and authentication status with sign in/out buttons.",
+  "frontend/src/App.tsx": "Main application component with navigation tabs for \"My Q&A\" and \"AI Video\" pages, including header, footer with attribution, and subtle background pattern.",
+  "frontend/src/components/AuthStatus.tsx": "Header component displaying the Nepali Q&A branding, user profile name (when available), and Internet Identity authentication controls with logout clearing cached data.",
   "frontend/src/pages/ChatPage.tsx": "Main chat page that orchestrates the message feed and composer, with loading/error states and welcome screen for unauthenticated users.",
   "frontend/src/components/MessageFeed.tsx": "Scrollable message feed component that displays chat messages with avatars, timestamps, and empty state.",
   "frontend/src/components/MessageComposer.tsx": "Message input component with validation, character counter, and send button that prompts unauthenticated users to sign in.",
@@ -11,5 +11,15 @@
   "frontend/src/hooks/useSendMessage.ts": "React Query mutation hook for sending messages that invalidates the message cache on success.",
   "frontend/src/hooks/useScrollAnchor.ts": "Custom hook that manages scroll anchoring logic to auto-scroll only when user is near the bottom of the feed.",
   "frontend/src/lib/chatValidation.ts": "Validation utilities for chat messages including length limits and whitespace trimming.",
-  "frontend/src/index.css": "Complete CSS with warm terracotta, charcoal, and beige OKLCH color system for both light and dark modes, avoiding blue/purple tones."
+  "frontend/src/index.css": "Complete CSS with warm terracotta, charcoal, and beige OKLCH color system for both light and dark modes, avoiding blue/purple tones.",
+  "frontend/src/pages/MyQAPage.tsx": "Authenticated-only Q&A page that shows user profile setup dialog when needed, displays the user's private questions/answers list, and includes the composer for creating new questions.",
+  "frontend/src/components/QAComposer.tsx": "Question input component with speech-to-text microphone control (Nepali locale), character counter, validation, and fallback messaging for unsupported browsers.",
+  "frontend/src/components/QAItemCard.tsx": "Q&A item card displaying question/answer with text-to-speech playback controls, inline answer editing, and proper error/unsupported state handling.",
+  "frontend/src/components/ProfileSetupDialog.tsx": "Modal dialog for first-time user profile setup requiring name entry, shown automatically after login when no profile exists, with close button hidden using showCloseButton prop.",
+  "frontend/src/hooks/useQuestions.ts": "React Query hook to fetch the authenticated user's questions from the backend, sorted newest-first.",
+  "frontend/src/hooks/useCreateQuestion.ts": "React Query mutation hook to create a new question and invalidate the questions cache on success.",
+  "frontend/src/hooks/useAnswerQuestion.ts": "React Query mutation hook to set or update an answer on an existing question and invalidate the questions cache on success.",
+  "frontend/src/hooks/useCallerUserProfile.ts": "React Query hooks for fetching and saving the caller's user profile with proper loading state management to prevent profile setup modal flash.",
+  "frontend/src/hooks/useSpeechToText.ts": "Custom hook implementing Web Speech API speech recognition with Nepali locale (ne-NP), continuous listening, interim results, and error handling for unsupported/denied states.",
+  "frontend/src/hooks/useTextToSpeech.ts": "Custom hook implementing Web Speech API speech synthesis with Nepali voice preference, playback controls, and error handling for unsupported browsers."
 }

@@ -7,16 +7,36 @@ export interface None {
     __kind__: "None";
 }
 export type Option<T> = Some<T> | None;
-export type MessageContent = string;
+export type QuestionContent = string;
+export type AnswerContent = string;
 export type Timestamp = bigint;
-export interface ChatMessage {
-    content: MessageContent;
+export type QuestionId = bigint;
+export interface Question {
+    id: QuestionId;
+    created: Timestamp;
+    modified?: Timestamp;
+    content: QuestionContent;
     displayName?: DisplayName;
+    answer?: AnswerContent;
     author: Principal;
-    timestamp: Timestamp;
+}
+export interface UserProfile {
+    name: string;
 }
 export type DisplayName = string;
+export enum UserRole {
+    admin = "admin",
+    user = "user",
+    guest = "guest"
+}
 export interface backendInterface {
-    getMessages(limit: bigint, offset: bigint): Promise<Array<ChatMessage>>;
-    sendMessage(displayName: DisplayName | null, content: MessageContent): Promise<void>;
+    answerQuestion(questionId: QuestionId, answer: AnswerContent): Promise<void>;
+    assignCallerUserRole(user: Principal, role: UserRole): Promise<void>;
+    createQuestion(displayName: DisplayName | null, content: QuestionContent): Promise<QuestionId>;
+    getCallerUserProfile(): Promise<UserProfile | null>;
+    getCallerUserRole(): Promise<UserRole>;
+    getQuestions(limit: bigint, offset: bigint): Promise<Array<Question>>;
+    getUserProfile(user: Principal): Promise<UserProfile | null>;
+    isCallerAdmin(): Promise<boolean>;
+    saveCallerUserProfile(profile: UserProfile): Promise<void>;
 }

@@ -8,45 +8,95 @@
 
 import { IDL } from '@icp-sdk/core/candid';
 
-export const MessageContent = IDL.Text;
+export const QuestionId = IDL.Nat;
+export const AnswerContent = IDL.Text;
+export const UserRole = IDL.Variant({
+  'admin' : IDL.Null,
+  'user' : IDL.Null,
+  'guest' : IDL.Null,
+});
 export const DisplayName = IDL.Text;
+export const QuestionContent = IDL.Text;
+export const UserProfile = IDL.Record({ 'name' : IDL.Text });
 export const Timestamp = IDL.Int;
-export const ChatMessage = IDL.Record({
-  'content' : MessageContent,
+export const Question = IDL.Record({
+  'id' : QuestionId,
+  'created' : Timestamp,
+  'modified' : IDL.Opt(Timestamp),
+  'content' : QuestionContent,
   'displayName' : IDL.Opt(DisplayName),
+  'answer' : IDL.Opt(AnswerContent),
   'author' : IDL.Principal,
-  'timestamp' : Timestamp,
 });
 
 export const idlService = IDL.Service({
-  'getMessages' : IDL.Func(
-      [IDL.Nat, IDL.Nat],
-      [IDL.Vec(ChatMessage)],
+  '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
+  'answerQuestion' : IDL.Func([QuestionId, AnswerContent], [], []),
+  'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
+  'createQuestion' : IDL.Func(
+      [IDL.Opt(DisplayName), QuestionContent],
+      [QuestionId],
+      [],
+    ),
+  'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
+  'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
+  'getQuestions' : IDL.Func([IDL.Nat, IDL.Nat], [IDL.Vec(Question)], ['query']),
+  'getUserProfile' : IDL.Func(
+      [IDL.Principal],
+      [IDL.Opt(UserProfile)],
       ['query'],
     ),
-  'sendMessage' : IDL.Func([IDL.Opt(DisplayName), MessageContent], [], []),
+  'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
+  'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
 });
 
 export const idlInitArgs = [];
 
 export const idlFactory = ({ IDL }) => {
-  const MessageContent = IDL.Text;
+  const QuestionId = IDL.Nat;
+  const AnswerContent = IDL.Text;
+  const UserRole = IDL.Variant({
+    'admin' : IDL.Null,
+    'user' : IDL.Null,
+    'guest' : IDL.Null,
+  });
   const DisplayName = IDL.Text;
+  const QuestionContent = IDL.Text;
+  const UserProfile = IDL.Record({ 'name' : IDL.Text });
   const Timestamp = IDL.Int;
-  const ChatMessage = IDL.Record({
-    'content' : MessageContent,
+  const Question = IDL.Record({
+    'id' : QuestionId,
+    'created' : Timestamp,
+    'modified' : IDL.Opt(Timestamp),
+    'content' : QuestionContent,
     'displayName' : IDL.Opt(DisplayName),
+    'answer' : IDL.Opt(AnswerContent),
     'author' : IDL.Principal,
-    'timestamp' : Timestamp,
   });
   
   return IDL.Service({
-    'getMessages' : IDL.Func(
+    '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
+    'answerQuestion' : IDL.Func([QuestionId, AnswerContent], [], []),
+    'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
+    'createQuestion' : IDL.Func(
+        [IDL.Opt(DisplayName), QuestionContent],
+        [QuestionId],
+        [],
+      ),
+    'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
+    'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
+    'getQuestions' : IDL.Func(
         [IDL.Nat, IDL.Nat],
-        [IDL.Vec(ChatMessage)],
+        [IDL.Vec(Question)],
         ['query'],
       ),
-    'sendMessage' : IDL.Func([IDL.Opt(DisplayName), MessageContent], [], []),
+    'getUserProfile' : IDL.Func(
+        [IDL.Principal],
+        [IDL.Opt(UserProfile)],
+        ['query'],
+      ),
+    'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
+    'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
   });
 };
 

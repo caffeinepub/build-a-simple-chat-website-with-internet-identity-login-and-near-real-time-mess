@@ -1,146 +1,147 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "ClipForge — AI Video page with presets, local clip generation, download, and sharing help",
+  "title": "Nepali Voice Q&A (private, Internet Identity, STT/TTS)",
   "requirements": [
     {
-      "id": "REQ-8",
-      "summary": "Add a new AI Video page and navigation to switch between Chat and AI Video without breaking Chat behavior.",
+      "id": "REQ-3",
+      "summary": "Replace Chat UI with an authenticated-only “My Q&A” page that loads and displays the signed-in user’s private questions and answers with proper loading/empty/error states.",
       "acceptanceCriteria": [
-        "App has a clear way to navigate between Chat and AI Video views (e.g., tabs/links/buttons).",
-        "Chat page behavior remains unchanged (messages still load, sign-in/out still works).",
-        "All user-facing text on the new page is in English."
+        "When the user is not authenticated, the page prompts sign-in and does not display any Q&A content.",
+        "When authenticated, the page shows only the signed-in user’s Q&A items loaded from the backend.",
+        "Empty state messaging is specific to private Q&A (e.g., no items yet).",
+        "Existing app navigation remains functional (do not break the AI Video page)."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/pages/AIVideoPage.tsx",
+          "path": "frontend/src/pages/ChatPage.tsx",
+          "operation": "rename",
+          "description": "Rename the page to reflect the new private Q&A experience (e.g., MyQAPage) while preserving the existing AI Video navigation behavior."
+        },
+        {
+          "path": "frontend/src/pages/MyQAPage.tsx",
           "operation": "create",
-          "description": "Create the new AI Video page view component (English-only UI) using the existing shadcn-ui primitives (e.g., Card, Button, Input) to keep styling consistent. Verify the component's usage instructions before implementing."
+          "description": "Create the authenticated-only “My Q&A” page: gate all Q&A content behind Internet Identity, show loading/error/empty states, and render the user’s questions/answers using backend getQuestions plus compose components. Use the authorization component guidance to ensure no private data is shown before authentication. Verify the component's usage instructions before implementing."
         },
         {
           "path": "frontend/src/App.tsx",
           "operation": "modify",
-          "description": "Wire AI Video page into the app by adding in-app navigation (e.g., warm-themed tab buttons) to switch between the existing ChatPage and the new AIVideoPage, ensuring ChatPage rendering and behavior remain unchanged when selected."
-        }
-      ]
-    },
-    {
-      "id": "REQ-9",
-      "summary": "Implement the AI Video creation form with prompt input and required voice/music preset selections (Male/Female; Soft/Calm/Cinematic) with inline validation.",
-      "acceptanceCriteria": [
-        "User can enter a prompt and must choose one voice preset (Male/Female) and one music preset (Soft/Calm/Cinematic) before generating.",
-        "Validation errors are shown inline in English when required inputs are missing.",
-        "Selections persist while the user stays on the AI Video page (changing prompt/voice/music updates the next generated clip)."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/pages/AIVideoPage.tsx",
-          "operation": "modify",
-          "description": "Add the video-creation form: prompt text input plus required voice (Male/Female) and music (Soft/Calm/Cinematic) selections, with inline English validation and state that persists while the user stays on the AI Video page. Use existing shadcn-ui components (e.g., Input, Button, Card) for consistent form controls where available. Verify the component's usage instructions before implementing."
-        }
-      ]
-    },
-    {
-      "id": "REQ-10",
-      "summary": "Implement a local-only Generate flow that creates unlimited placeholder preview clips without external AI service calls.",
-      "acceptanceCriteria": [
-        "Clicking Generate creates a new clip entry each time; the UI does not block creation due to a quota/limit.",
-        "The generation flow does not require calling external AI providers/services.",
-        "Each generated clip has a visible preview area or a clearly labeled placeholder preview state on completion."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/pages/AIVideoPage.tsx",
-          "operation": "modify",
-          "description": "Implement local placeholder clip generation: on each Generate click, append a new clip entry (no quota/limit) and produce a preview state (e.g., a video element fed by an object URL when feasible, otherwise a clearly labeled placeholder preview panel). Ensure no external AI/service calls are used."
+          "description": "Wire the renamed/new “My Q&A” page into the existing navigation in place of Chat, keeping the AI Video page fully functional and reachable."
         },
         {
-          "path": "frontend/src/lib/localClipGenerator.ts",
+          "path": "frontend/src/components/AuthStatus.tsx",
+          "operation": "modify",
+          "description": "Update header behavior to align with the authorization component guidance: on logout, clear cached React Query data; avoid displaying the raw Principal id by default; optionally display a friendly name derived from the caller user profile. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useQuestions.ts",
           "operation": "create",
-          "description": "Add a small frontend utility to create a downloadable placeholder 'video' Blob (with a video file extension) and return an object URL plus metadata for previews; keep it deterministic and fully local (no network calls)."
-        }
-      ]
-    },
-    {
-      "id": "REQ-11",
-      "summary": "Add per-clip Download action that triggers a browser download with a video file extension and handles failures gracefully.",
-      "acceptanceCriteria": [
-        "After generating a clip, a Download button is available for that clip.",
-        "Clicking Download triggers a file download in the browser with a video file extension.",
-        "If generation fails, Download is disabled/hidden and a clear English error message is shown."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/pages/AIVideoPage.tsx",
-          "operation": "modify",
-          "description": "For each generated clip entry, render a Download action that triggers a browser download (e.g., via an anchor + object URL) using a video file extension. If a clip is in a failed state, hide/disable Download and show a clear English error message. Use existing shadcn-ui Button styling for the action. Verify the component's usage instructions before implementing."
+          "description": "Add a React Query hook that loads the authenticated caller’s Q&A list from the backend actor (getQuestions) and exposes loading/error states for the “My Q&A” page."
         },
         {
-          "path": "frontend/src/lib/download.ts",
+          "path": "frontend/src/hooks/useCreateQuestion.ts",
           "operation": "create",
-          "description": "Add a small helper to initiate downloads in-browser (e.g., create an anchor, set download filename with a video extension, click, and clean up object URLs) to keep the AI Video page logic clean."
-        }
-      ]
-    },
-    {
-      "id": "REQ-12",
-      "summary": "Provide in-app upload/share assistance UI for social platforms without any direct API integration or logins.",
-      "acceptanceCriteria": [
-        "AI Video page includes a clearly labeled section for sharing/upload help.",
-        "The help UI gives platform-agnostic steps users can follow to upload a downloaded video file to social platforms.",
-        "No feature requires logging into or calling APIs for TikTok/YouTube/Instagram/etc."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/pages/AIVideoPage.tsx",
-          "operation": "modify",
-          "description": "Add a clearly labeled 'Sharing / Upload Help' section that provides platform-agnostic, step-by-step guidance for uploading a downloaded video file to common social platforms, explicitly avoiding any social API calls or in-app login flows. Present the content in warm-themed panels using existing shadcn-ui Card/typography conventions. Verify the component's usage instructions before implementing."
-        }
-      ]
-    },
-    {
-      "id": "REQ-13",
-      "summary": "Apply a cohesive warm-toned visual theme to the AI Video page consistent with the existing Chat page (no blue/purple shift).",
-      "acceptanceCriteria": [
-        "AI Video page uses the existing design system (Tailwind + existing theme variables) and looks visually consistent with the Chat page.",
-        "No dominant blue/purple color theme is introduced.",
-        "New UI components (forms, buttons, panels) match existing spacing/typography conventions."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/pages/AIVideoPage.tsx",
-          "operation": "modify",
-          "description": "Style the AI Video page using the existing Tailwind + warm OKLCH theme variables (background/card/muted/primary) and reuse established spacing/typography patterns from Chat (e.g., container widths, Card + shadow-warm), avoiding any blue/purple dominant palette."
+          "description": "Add a React Query mutation hook to create a question via the backend actor (createQuestion), then invalidate/refetch the questions query on success."
         },
+        {
+          "path": "frontend/src/hooks/useAnswerQuestion.ts",
+          "operation": "create",
+          "description": "Add a React Query mutation hook to set/update an answer via the backend actor (answerQuestion), then invalidate/refetch the questions query on success."
+        },
+        {
+          "path": "frontend/src/hooks/useCallerUserProfile.ts",
+          "operation": "create",
+          "description": "Use the authorization component’s user profile setup guidance by adding a query hook for getCallerUserProfile and a mutation hook for saveCallerUserProfile; expose derived UI state to prevent profile-setup modal flash. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/ProfileSetupDialog.tsx",
+          "operation": "create",
+          "description": "Create a small profile setup dialog (name entry) shown only after login when no profile exists, using shadcn-ui dialog/input/button primitives. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "summary": "Add in-browser speech-to-text (Nepali locale preferred) to dictate questions into the Q&A composer with robust fallbacks.",
+      "acceptanceCriteria": [
+        "Composer includes a microphone control to start/stop speech recognition.",
+        "When supported by the browser, dictated speech fills/updates the question input field.",
+        "When speech recognition is not supported or permission is denied, the UI shows an English fallback message and the app remains usable via typing.",
+        "Speech-to-text defaults to a Nepali locale when possible (e.g., ne-NP) while still accepting any resulting Unicode text."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useSpeechToText.ts",
+          "operation": "create",
+          "description": "Implement a reusable Web Speech API speech-recognition hook for speech-to-text: start/stop controls, ne-NP locale preference, interim/final transcript handling, and explicit unsupported/permission-denied error states."
+        },
+        {
+          "path": "frontend/src/components/QAComposer.tsx",
+          "operation": "create",
+          "description": "Create the Q&A composer UI with a text input plus a microphone start/stop control wired to the speech-to-text hook; show an English fallback message when unsupported/blocked; keep typing fully usable. Use shadcn-ui input/button/card components for layout and states. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/MyQAPage.tsx",
+          "operation": "modify",
+          "description": "Wire the new QAComposer into the “My Q&A” page and connect it to question creation (useCreateQuestion), ensuring dictated text populates the same input used for submission."
+        }
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "summary": "Add in-browser text-to-speech playback for each question and answer with stop/cancel and Nepali voice preference when available.",
+      "acceptanceCriteria": [
+        "Each rendered Q&A item provides a play button to read aloud the question text and, if present, the answer text.",
+        "Playback uses the browser’s built-in speech synthesis; if unavailable, the UI shows an English message explaining that TTS is not supported.",
+        "Playback can be stopped/cancelled from the UI (at least by toggling the same control).",
+        "TTS attempts to select a Nepali voice if available, otherwise falls back to a default voice without breaking."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useTextToSpeech.ts",
+          "operation": "create",
+          "description": "Implement a reusable Web Speech API speech-synthesis hook supporting play/stop toggling, voice selection preferring Nepali when available, and an explicit unsupported state."
+        },
+        {
+          "path": "frontend/src/components/QAItemCard.tsx",
+          "operation": "create",
+          "description": "Create a Q&A item renderer that displays question/answer and includes per-field TTS play/stop controls using the text-to-speech hook; show English fallback messaging if TTS isn’t supported. Use shadcn-ui card/button components for consistent UI. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/MyQAPage.tsx",
+          "operation": "modify",
+          "description": "Render the fetched questions list using QAItemCard so each item supports TTS for question and answer text."
+        }
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "summary": "Rebrand the UI from “Chat” to a Nepali-focused private Q&A experience while keeping all user-facing text in English.",
+      "acceptanceCriteria": [
+        "Navigation tab label and page headings reflect private Q&A (not “Chat”).",
+        "Placeholders/hints encourage Nepali input (in English text, e.g., “Type in Nepali…”).",
+        "No user-facing UI text is introduced in languages other than English."
+      ],
+      "file_operations": [
         {
           "path": "frontend/src/App.tsx",
           "operation": "modify",
-          "description": "Ensure the new navigation and page switching UI uses the existing warm theme tokens (primary/muted/border) so Chat and AI Video feel cohesive and consistent."
-        }
-      ]
-    },
-    {
-      "id": "REQ-14",
-      "summary": "Render new generated static image assets from frontend/public/assets/generated and use them in the AI Video page UI.",
-      "acceptanceCriteria": [
-        "New AI Video page references the generated assets via static paths under /assets/generated/.",
-        "Assets load correctly in the browser and are used in the AI Video page UI."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/public/assets/generated/video-hero.dim_1600x600.png",
-          "operation": "create",
-          "description": "Add the generated hero image asset file at the exact path frontend/public/assets/generated/video-hero.dim_1600x600.png for static serving (do not serve from backend)."
+          "description": "Update the navigation tab label from “Chat” to “My Q&A” and ensure the selected view naming reflects private Q&A while keeping AI Video unchanged."
         },
         {
-          "path": "frontend/public/assets/generated/video-icon.dim_256x256.png",
-          "operation": "create",
-          "description": "Add the generated icon asset file at the exact path frontend/public/assets/generated/video-icon.dim_256x256.png for static serving (do not serve from backend)."
-        },
-        {
-          "path": "frontend/src/pages/AIVideoPage.tsx",
+          "path": "frontend/src/components/AuthStatus.tsx",
           "operation": "modify",
-          "description": "Reference and render the static assets in the AI Video page UI using the exact paths frontend/public/assets/generated/video-hero.dim_1600x600.png and frontend/public/assets/generated/video-icon.dim_256x256.png (served under /assets/generated/ in the browser), ensuring they appear in the page layout (e.g., hero/header section)."
+          "description": "Update header branding copy from generic “Chat” to a Nepali-focused private Q&A brand (English text only) while continuing to use existing generated assets already referenced by the header."
+        },
+        {
+          "path": "frontend/src/pages/MyQAPage.tsx",
+          "operation": "modify",
+          "description": "Update page headings, empty-state copy, and sign-in prompts to reflect private Nepali Q&A (English text), including hints like “Type in Nepali…”."
+        },
+        {
+          "path": "frontend/src/components/QAComposer.tsx",
+          "operation": "modify",
+          "description": "Ensure composer placeholder/help text encourages Nepali input (English text), and ensure any STT/TTS status/error messages remain English-only."
         }
       ]
     }

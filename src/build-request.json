@@ -1,155 +1,156 @@
 {
   "kind": "build_request",
-  "title": "Add AI video generator page with voice/music presets, download, and social sharing help",
-  "projectName": "ClipForge",
+  "title": "Convert chat to private Nepali Q&A with speech-to-text and text-to-speech",
+  "projectName": "Nepali Voice Q&A",
   "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-8",
-      "text": "Add a separate \"AI Video\" page to the existing app and provide navigation so users can switch between the existing Chat page and the new AI Video page without removing or breaking Chat functionality.",
-      "target": "frontend",
+      "id": "REQ-1",
+      "text": "Implement per-user private storage and retrieval so that each authenticated user can only create and view their own Q&A items; no user should be able to read any other user's items, even if they know IDs or pagination parameters.",
+      "target": "backend",
       "source": {
         "messageIds": [
-          "msg-5",
-          "msg-9"
+          "msg-1"
         ],
         "quotes": [
-          "Separate new page with different ai voice all kinds of music should be available",
-          "Ok start"
+          "Developed a website for nepali people  to ask anything in nepali it should have voice features",
+          "Only visible to the user",
+          "Yes",
+          "Build it"
         ]
       },
       "acceptanceCriteria": [
-        "App has a clear way to navigate between Chat and AI Video views (e.g., tabs/links/buttons).",
-        "Chat page behavior remains unchanged (messages still load, sign-in/out still works).",
-        "All user-facing text on the new page is in English."
+        "Backend persists Q&A items keyed by caller Principal and never returns items belonging to other Principals.",
+        "All list/get operations scope results to the caller Principal.",
+        "Unauthenticated/anonymous callers cannot create items; backend rejects attempts with a clear error message."
       ]
     },
     {
-      "id": "REQ-9",
-      "text": "On the AI Video page, implement a simple video-creation form with: (1) a prompt text input, (2) a required AI voice selection with at least \"Male\" and \"Female\", and (3) a required background music selection that includes \"Soft\", \"Calm\", and \"Cinematic\" options.",
-      "target": "frontend",
+      "id": "REQ-2",
+      "text": "Replace the global chat message model with a private Q&A model that supports: creating a question, listing the caller’s questions, and saving an optional answer for a question (answer authored/edited by the same caller).",
+      "target": "backend",
       "source": {
         "messageIds": [
-          "msg-7"
+          "msg-1"
         ],
         "quotes": [
-          "AI voice and music should be real select male and female voice with soft calm cenematic music"
+          "ask anything in nepali",
+          "private answer"
         ]
       },
       "acceptanceCriteria": [
-        "User can enter a prompt and must choose one voice preset (Male/Female) and one music preset (Soft/Calm/Cinematic) before generating.",
-        "Validation errors are shown inline in English when required inputs are missing.",
-        "Selections persist while the user stays on the AI Video page (changing prompt/voice/music updates the next generated clip)."
+        "There is a backend API to create a new question item (question text required).",
+        "There is a backend API to list the caller’s Q&A items (newest-first or oldest-first must be consistent and documented in code).",
+        "There is a backend API to set/update the answer text on an existing question owned by the caller.",
+        "Backend validates text similarly to the current chat validation (trim whitespace-only, enforce max length, and rate-limit creation/updates).",
+        "If the caller tries to update an item they do not own, the backend returns an authorization error."
       ]
     },
     {
-      "id": "REQ-10",
-      "text": "Implement a \"Generate\" flow on the AI Video page that works without any external AI service calls by producing a locally generated preview clip (placeholder generation is acceptable) and allows the user to create unlimited clips (no per-user or per-session enforced limit in the UI/flow).",
+      "id": "REQ-3",
+      "text": "Update the frontend “Chat” experience to a private “My Q&A” page that only works when signed in with Internet Identity, showing the user’s own questions and answers and appropriate empty/loading/error states.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-8"
+          "msg-1"
         ],
         "quotes": [
-          "should be  to create unlimited video clip"
+          "Only visible to the user and user should access to internet",
+          "Yes"
         ]
       },
       "acceptanceCriteria": [
-        "Clicking Generate creates a new clip entry each time; the UI does not block creation due to a quota/limit.",
-        "The generation flow does not require calling external AI providers/services.",
-        "Each generated clip has a visible preview area or a clearly labeled placeholder preview state on completion."
+        "When the user is not authenticated, the page prompts sign-in and does not display any Q&A content.",
+        "When authenticated, the page shows only the signed-in user’s Q&A items loaded from the backend.",
+        "Empty state messaging is specific to private Q&A (e.g., no items yet).",
+        "Existing app navigation remains functional (do not break the AI Video page)."
       ]
     },
     {
-      "id": "REQ-11",
-      "text": "Add a \"Download\" action for each generated clip on the AI Video page so the user can download the generated video (or the generated placeholder clip) to their device.",
+      "id": "REQ-4",
+      "text": "Add in-browser speech-to-text for Nepali input on the Q&A composer so users can dictate a question and have it populate the text input.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-4",
-          "msg-8"
+          "msg-1"
         ],
         "quotes": [
-          "create video should be download",
-          "And make it possible to download video"
+          "it should have voice features"
         ]
       },
       "acceptanceCriteria": [
-        "After generating a clip, a Download button is available for that clip.",
-        "Clicking Download triggers a file download in the browser with a video file extension.",
-        "If generation fails, Download is disabled/hidden and a clear English error message is shown."
+        "Composer includes a microphone control to start/stop speech recognition.",
+        "When supported by the browser, dictated speech fills/updates the question input field.",
+        "When speech recognition is not supported or permission is denied, the UI shows an English fallback message and the app remains usable via typing.",
+        "Speech-to-text defaults to a Nepali locale when possible (e.g., ne-NP) while still accepting any resulting Unicode text."
       ]
     },
     {
-      "id": "REQ-12",
-      "text": "Provide \"upload/share assistance\" on the AI Video page for posting generated videos to different social media platforms, implemented as an in-app help UI (no direct integration with social media APIs).",
+      "id": "REQ-5",
+      "text": "Add in-browser text-to-speech playback controls so users can listen to their question and/or answer read aloud.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-8"
+          "msg-1"
         ],
         "quotes": [
-          "help me to upload in different social media"
+          "it should have voice features"
         ]
       },
       "acceptanceCriteria": [
-        "AI Video page includes a clearly labeled section for sharing/upload help.",
-        "The help UI gives platform-agnostic steps users can follow to upload a downloaded video file to social platforms.",
-        "No feature requires logging into or calling APIs for TikTok/YouTube/Instagram/etc."
+        "Each rendered Q&A item provides a play button to read aloud the question text and, if present, the answer text.",
+        "Playback uses the browser’s built-in speech synthesis; if unavailable, the UI shows an English message explaining that TTS is not supported.",
+        "Playback can be stopped/cancelled from the UI (at least by toggling the same control).",
+        "TTS attempts to select a Nepali voice if available, otherwise falls back to a default voice without breaking."
       ]
     },
     {
-      "id": "REQ-13",
-      "text": "Create and apply a cohesive visual theme for the new AI Video page that matches the existing warm-toned site styling and remains consistent across both Chat and AI Video pages (do not introduce a blue/purple theme).",
+      "id": "REQ-6",
+      "text": "Update user-facing labels and branding from generic “Chat” to a Nepali-focused private Q&A experience, while keeping all user-facing text in English.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-9"
+          "msg-1"
         ],
         "quotes": [
-          "Ok start"
+          "Build it",
+          "Use English for any user-facing text in the build request."
         ]
       },
       "acceptanceCriteria": [
-        "AI Video page uses the existing design system (Tailwind + existing theme variables) and looks visually consistent with the Chat page.",
-        "No dominant blue/purple color theme is introduced.",
-        "New UI components (forms, buttons, panels) match existing spacing/typography conventions."
-      ]
-    },
-    {
-      "id": "REQ-14",
-      "text": "Render newly generated static image assets for the AI Video page from frontend/public/assets/generated (do not serve them from the backend).",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-9"
-        ],
-        "quotes": [
-          "Ok start"
-        ]
-      },
-      "acceptanceCriteria": [
-        "New AI Video page references the generated assets via static paths under /assets/generated/.",
-        "Assets load correctly in the browser and are used in the AI Video page UI."
+        "Navigation tab label and page headings reflect private Q&A (not “Chat”).",
+        "Placeholders/hints encourage Nepali input (in English text, e.g., “Type in Nepali…”).",
+        "No user-facing UI text is introduced in languages other than English."
       ]
     }
   ],
   "constraints": [
-    "Backend must remain a single Motoko actor in backend/main.mo; do not introduce additional backend services.",
-    "Do not modify files listed as immutable in SYSTEM_CONTEXT (compose existing UI components instead).",
-    "Do not integrate with external AI video generation services or third-party social media authentication/APIs."
+    "Do not edit files under frontend/src/components/ui (compose these components instead).",
+    "Do not edit frontend immutable hook files (frontend/src/hooks/useInternetIdentity.ts / .tsx, frontend/src/hooks/useActor.ts, frontend/src/main.tsx).",
+    "Backend must remain a single Motoko actor in backend/main.mo; add backend/migration.mo only if required for state upgrades."
   ],
   "nonGoals": [
-    "True AI video generation via external providers (OpenAI/Anthropic/other).",
-    "Direct in-app uploads to social media via platform APIs.",
-    "Providing guaranteed availability of specific male/female voices across all browsers/devices (voice selection is a preset; actual synthesis/availability may vary).",
-    "Adding a backend database or external storage for generated videos."
+    "Do not implement automated AI answering or LLM integrations.",
+    "Do not fetch/browse external websites for answers.",
+    "Do not add third-party authentication providers (Internet Identity only).",
+    "Do not add real-time WebSocket-based updates (polling is acceptable)."
   ],
   "imageRequirements": {
-    "required": [
-      "Warm cinematic illustration with abstract film frames and sound waves, terracotta/beige/charcoal palette (video-hero.dim_1600x600.png)",
-      "Minimal clapperboard icon in warm terracotta and charcoal on transparent background (video-icon.dim_256x256.png)"
-    ],
+    "required": [],
     "edits": []
+  },
+  "userProfileUpdate": {
+    "goalsToAdd": [
+      "Build a private Nepali Q&A web app with voice input (speech-to-text) and voice playback (text-to-speech) using Internet Identity for per-user data privacy."
+    ],
+    "goalsToRemove": [],
+    "preferencesToAdd": [
+      "Keep user-facing UI text in English while supporting Nepali content entry and playback."
+    ],
+    "preferencesToRemove": [],
+    "miscToAdd": [],
+    "miscToRemove": [],
+    "fieldsToSet": {},
+    "fieldsToDelete": []
   }
 }

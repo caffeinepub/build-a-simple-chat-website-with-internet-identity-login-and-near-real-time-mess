@@ -1,14 +1,14 @@
 import { useState } from 'react';
-import { ChatPage } from './pages/ChatPage';
+import { MyQAPage } from './pages/MyQAPage';
 import { AIVideoPage } from './pages/AIVideoPage';
 import { AuthStatus } from './components/AuthStatus';
 import { Button } from './components/ui/button';
 import { MessageCircle, Video } from 'lucide-react';
 
-type View = 'chat' | 'video';
+type View = 'qa' | 'video';
 
 function App() {
-  const [currentView, setCurrentView] = useState<View>('chat');
+  const [currentView, setCurrentView] = useState<View>('qa');
 
   return (
     <div className="min-h-screen flex flex-col bg-background relative overflow-hidden">
@@ -31,12 +31,12 @@ function App() {
           <div className="container mx-auto px-4">
             <div className="flex gap-2">
               <Button
-                variant={currentView === 'chat' ? 'default' : 'ghost'}
-                onClick={() => setCurrentView('chat')}
+                variant={currentView === 'qa' ? 'default' : 'ghost'}
+                onClick={() => setCurrentView('qa')}
                 className="gap-2 rounded-b-none"
               >
                 <MessageCircle className="w-4 h-4" />
-                Chat
+                My Q&A
               </Button>
               <Button
                 variant={currentView === 'video' ? 'default' : 'ghost'}
@@ -51,7 +51,7 @@ function App() {
         </div>
 
         <main className="flex-1 flex flex-col">
-          {currentView === 'chat' ? <ChatPage /> : <AIVideoPage />}
+          {currentView === 'qa' ? <MyQAPage /> : <AIVideoPage />}
         </main>
         
         <footer className="py-4 px-4 text-center text-sm text-muted-foreground border-t border-border/50">
